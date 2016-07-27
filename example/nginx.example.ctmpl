@@ -1,0 +1,15 @@
+{{range ls "/sd/env"}}{{$env := .Key}}{{range ls (print "/sd/env/" $env "/definitions")}}{{$svc := .Key}}
+upstream {{$env}}_{{$svc}} { {{range service (print $env "_" $svc)}}
+    server {{.Address}}:{{.Port}};{{end}}
+} {{end}}{{end}}
+
+server {
+    listen 80;
+
+    set $env $http_x_ids_env;
+
+    {{range ls "/sd/env"}}{{$env := .Key}}{{range ls (print "/sd/env/" $env "/definitions")}}{{$svc := .Key}}{{$def := .Value | parseJSON}}location /{{$def.nginx.path}}/ {
+        # Consumes: {{$def.consumes}}
+        proxy_pass http://${env}_{{$svc}}/;
+    }{{end}}{{end}}
+}
