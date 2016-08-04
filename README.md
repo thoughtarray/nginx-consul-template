@@ -10,7 +10,7 @@ This image uses [S6](http://skarnet.org/software/s6/) (specifically [s6-overlay]
 
 ## How to use
 ### Required (probably) settings
-The main two settings to customize is the  Consul location environment variables `CONSUL_ADDR` and `CONSUL_PORT`, and the Consul Template template for Nginx `/usr/local/etc/consul-template/templates/nginx.ctmpl`.
+The main two settings to customize is the Consul location environment variables `CONSUL_ADDR` and `CONSUL_PORT`, and the Consul Template template for Nginx `/usr/local/etc/consul-template/templates/nginx.ctmpl`.
 
 ### Optional settings
 Another component that you may be interested in customizing is the Consul Template config file which lives here: `/usr/local/etc/consul-template/consul-template.conf`.
@@ -18,8 +18,8 @@ Another component that you may be interested in customizing is the Consul Templa
 ### Example
 ```sh
 docker run --name service-proxy -p 80:80 -p 443:443 \
-  -e "CONSUL_ADDR=[ip/hostname of Consul (hopefully local client)]" \
-  -e "CONSUL_PORT=[port of Consul API (probably 8500)]" \
+  -e "CONSUL_ADDR=<ip/host of Consul>" \
+  -e "CONSUL_PORT=<port>" \
   -v "/path/on/host:/usr/local/etc/consul-template/templates/nginx.ctmpl:ro" \
   nginx-consul-template
 
@@ -42,7 +42,7 @@ less /etc/nginx/conf.d/default.conf
 export TERM=xterm
 ```
 
-## Testing reload performance
+## Testing
 ```sh
 cd /path/to/this/repo
 
@@ -52,7 +52,7 @@ docker run -d --name consul -p 8500:8500 \
 # ^ UI accessible at http://localhost:8500/ui/
 
 # Build KV tree on test Consul
-./example/populate_consul.sh "localhost:8500"
+./example/populate_consul.sh "<ip/host of Consul>"
 
 # Start test app
 docker run --name test-app -d -p 5000:5000 alpine sh \
@@ -60,7 +60,7 @@ docker run --name test-app -d -p 5000:5000 alpine sh \
 
 # Start service proxy
 docker run -d --name service-proxy -p 80:80 \
-  -e "CONSUL_ADDR=$(ipconfig getifaddr en0)" \
+  -e "CONSUL_ADDR=<ip/host of Consul>" \
   -v "$(pwd)/example/nginx.example.ctmpl:/usr/local/etc/consul-template/templates/nginx.ctmpl:ro" \
   nginx-consul-template
 
