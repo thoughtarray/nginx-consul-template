@@ -86,4 +86,4 @@ docker kill service-proxy test-app consul \
 
 ## Known issues
 * Docker for Mac (or maybe OSX) is a load-testing bottleneck?
-* Sometimes Consul Template's reload commands out-pace HAProxy's reloading speed (might be related to lingering connections in old instance)
+* Sometimes Consul Template's reload commands out-pace Nginx's reloading speed (might be related to lingering connections in old worker thread)
