@@ -38,7 +38,7 @@ docker exec -ti nginx-consul-template ash
 # You are now in the container
 less /etc/nginx/conf.d/default.conf
 
-# If the OS bitches at you and less doesn't work, do this and try again:
+# If the OS complains at you and less doesn't work, do this and try again:
 export TERM=xterm
 ```
 
